@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="003-01" author="reviq">
+        <createTable tableName="payment_type">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_code" type="varchar(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003-02" author="reviq">
+        <createTable tableName="cash_register_session">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="store_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_crs_store" references="store(id)"/>
+            </column>
+            <column name="register_number" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="session_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="cash_register_session" indexName="idx_crs_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="003-03" author="reviq">
+        <createTable tableName="receipt">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="receipt_number" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receipt_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_type" type="int"/>
+            <column name="discount" type="numeric(16,2)"/>
+            <column name="amount" type="numeric(16,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net_amount" type="numeric(16,2)"/>
+            <column name="refund" type="numeric(16,2)"/>
+            <column name="receipt_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cash_register_session_id" type="uuid">
+                <constraints foreignKeyName="fk_receipt_crs" references="cash_register_session(id)"/>
+            </column>
+            <column name="loyalty_card_id" type="uuid"/>
+            <column name="customer_id" type="uuid"/>
+            <column name="loyalty_points_master" type="int"/>
+            <column name="loyalty_points_promo" type="int"/>
+            <column name="is_preorder" type="boolean" defaultValueBoolean="false"/>
+            <column name="online_order_id" type="varchar(50)"/>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="receipt" indexName="idx_receipt_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+        <createIndex tableName="receipt" indexName="idx_receipt_time">
+            <column name="receipt_time"/>
+        </createIndex>
+        <createIndex tableName="receipt" indexName="idx_receipt_loyalty_card">
+            <column name="loyalty_card_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="003-04" author="reviq">
+        <createTable tableName="receipt_item">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="receipt_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_receipt_item_receipt" references="receipt(id)"/>
+            </column>
+            <column name="line_number" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_receipt_item_product" references="product(id)"/>
+            </column>
+            <column name="quantity" type="numeric(16,3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(16,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="list_price" type="numeric(16,2)"/>
+            <column name="discount" type="numeric(16,2)"/>
+            <column name="purchase_price" type="numeric(16,2)"/>
+            <column name="retail_amount" type="numeric(16,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tax_amount" type="numeric(16,2)"/>
+            <column name="warehouse" type="varchar(16)"/>
+            <column name="sales_type" type="varchar(5)"/>
+            <column name="earn_loyalty_points" type="boolean"/>
+            <column name="item_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refund" type="numeric(16,2)"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="receipt_item" indexName="idx_receipt_item_receipt">
+            <column name="receipt_id"/>
+        </createIndex>
+        <createIndex tableName="receipt_item" indexName="idx_receipt_item_product">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="003-05" author="reviq">
+        <createTable tableName="receipt_payment">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="receipt_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_receipt_payment_receipt" references="receipt(id)"/>
+            </column>
+            <column name="payment_type_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_receipt_payment_type" references="payment_type(id)"/>
+            </column>
+            <column name="warehouse" type="varchar(16)"/>
+            <column name="amount" type="numeric(16,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sales_type" type="varchar(5)"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

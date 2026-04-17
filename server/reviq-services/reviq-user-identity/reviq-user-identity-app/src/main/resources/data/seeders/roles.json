@@ -1,0 +1,20 @@
+[
+  {
+    "code": "ADMIN",
+    "name": "Admin",
+    "description": "Platform administrator with full system access",
+    "permissions": []
+  },
+  {
+    "code": "ORGANIZATION_ADMIN",
+    "name": "Organization Admin",
+    "description": "Full access to all tenant resources",
+    "permissions": []
+  },
+  {
+    "code": "ORGANIZATION_USER",
+    "name": "Organization User",
+    "description": "Standard user with limited access",
+    "permissions": []
+  }
+]

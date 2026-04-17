@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.reviq</groupId>
+        <artifactId>reviq</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>reviq-services</artifactId>
+    <packaging>pom</packaging>
+    <name>Reviq Services</name>
+    <description>Aggregator for all Reviq microservices</description>
+
+    <modules>
+        <module>reviq-tenancy</module>
+        <module>reviq-user-identity</module>
+        <module>reviq-ai</module>
+        <module>reviq-management</module>
+    </modules>
+</project>

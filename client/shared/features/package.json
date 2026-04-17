@@ -1,0 +1,28 @@
+{
+  "name": "@reviq/features",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@reviq/management-api": "*",
+    "@reviq/ai-api": "*",
+    "@reviq/common": "*",
+    "@reviq/theme": "*",
+    "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.6.5",
+    "react-hot-toast": "^2.4.1",
+    "react-i18next": "^14.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1 || ^19.0.0",
+    "react-dom": "^18.3.1 || ^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

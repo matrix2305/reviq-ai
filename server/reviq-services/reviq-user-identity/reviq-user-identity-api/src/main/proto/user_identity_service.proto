@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package com.reviq.identity.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.reviq.identity.grpc";
+option java_outer_classname = "UserIdentityServiceProto";
+
+service UserIdentityService {
+  rpc Authenticate (AuthenticateRequest) returns (AuthenticateResponse);
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc GetUserByToken (GetUserByTokenRequest) returns (UserInfoResponse);
+  rpc CreateUser (CreateUserGrpcRequest) returns (UserInfoResponse);
+}
+
+message CreateUserGrpcRequest {
+  string tenant_code = 1;
+  string tenant_id = 2;
+  string email = 3;
+  string password = 4;
+  string first_name = 5;
+  string last_name = 6;
+  string role_id = 7;
+  string role_code = 8;
+}
+
+message AuthenticateRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message AuthenticateResponse {
+  string token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3;
+  int64 refresh_expires_in = 4;
+  UserInfoResponse user = 5;
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  bool valid = 1;
+  string tenant_code = 2;
+  string user_id = 3;
+  string role = 4;
+  repeated string permissions = 5;
+}
+
+message GetUserByTokenRequest {
+  string token = 1;
+}
+
+message UserInfoResponse {
+  string id = 1;
+  string tenant_code = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string role = 6;
+  repeated string permissions = 7;
+}

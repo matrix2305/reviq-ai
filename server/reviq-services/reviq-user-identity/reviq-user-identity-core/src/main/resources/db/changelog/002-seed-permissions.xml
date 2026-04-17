@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="002-01" author="reviq">
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="DASHBOARD_VIEW"/><column name="description" value="View dashboard"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="SALES_VIEW"/><column name="description" value="View sales data"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="SALES_EXPORT"/><column name="description" value="Export sales reports"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="PRODUCTS_VIEW"/><column name="description" value="View products"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="PRODUCTS_EDIT"/><column name="description" value="Edit products"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="CUSTOMERS_VIEW"/><column name="description" value="View customers"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="CUSTOMERS_EDIT"/><column name="description" value="Edit customers"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="INVENTORY_VIEW"/><column name="description" value="View inventory"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="REPORTS_VIEW"/><column name="description" value="View reports"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="REPORTS_EXPORT"/><column name="description" value="Export reports"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="USERS_VIEW"/><column name="description" value="View users"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="USERS_MANAGE"/><column name="description" value="Manage users and roles"/></insert>
+        <insert tableName="permission"><column name="id" valueComputed="gen_random_uuid()"/><column name="code" value="TENANTS_MANAGE"/><column name="description" value="Manage tenants"/></insert>
+    </changeSet>
+
+</databaseChangeLog>

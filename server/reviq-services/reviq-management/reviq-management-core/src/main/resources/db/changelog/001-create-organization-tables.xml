@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="001-01" author="reviq">
+        <createTable tableName="store">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="erp_code" type="varchar(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="uuid">
+                <constraints foreignKeyName="fk_store_parent" references="store(id)"/>
+            </column>
+            <column name="street" type="varchar(100)"/>
+            <column name="city" type="varchar(100)"/>
+            <column name="zone" type="varchar(50)"/>
+            <column name="loyalty_store_id" type="int"/>
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="store" indexName="idx_store_erp_code">
+            <column name="erp_code"/>
+        </createIndex>
+        <createIndex tableName="store" indexName="idx_store_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

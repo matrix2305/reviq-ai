@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="002-01" author="reviq">
+        <createTable tableName="brand">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_code" type="varchar(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_of_measure" type="varchar(10)"/>
+            <column name="private_label" type="boolean" defaultValueBoolean="false"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="002-02" author="reviq">
+        <createTable tableName="product_group">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_code" type="varchar(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="uuid">
+                <constraints foreignKeyName="fk_product_group_parent" references="product_group(id)"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="002-03" author="reviq">
+        <createTable tableName="product">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manufacturer" type="varchar(50)"/>
+            <column name="base_code" type="varchar(20)"/>
+            <column name="brand_id" type="uuid">
+                <constraints foreignKeyName="fk_product_brand" references="brand(id)"/>
+            </column>
+            <column name="product_group_id" type="uuid">
+                <constraints foreignKeyName="fk_product_group" references="product_group(id)"/>
+            </column>
+            <column name="purchase_price" type="numeric(16,2)"/>
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="product" indexName="idx_product_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+        <createIndex tableName="product" indexName="idx_product_code">
+            <column name="code"/>
+        </createIndex>
+        <createIndex tableName="product" indexName="idx_product_brand">
+            <column name="brand_id"/>
+        </createIndex>
+        <createIndex tableName="product" indexName="idx_product_group">
+            <column name="product_group_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="002-04" author="reviq">
+        <createTable tableName="promotion">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="valid_from" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_to" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="promotion_item">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="promotion_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_promo_item_promotion" references="promotion(id)"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_promo_item_product" references="product(id)"/>
+            </column>
+            <column name="price" type="numeric(16,2)"/>
+            <column name="discount" type="numeric(16,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

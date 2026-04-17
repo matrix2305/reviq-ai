@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="006-01" author="reviq">
+        <createTable tableName="prescription">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="receipt_id" type="uuid">
+                <constraints foreignKeyName="fk_prescription_receipt" references="receipt(id)"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_prescription_product" references="product(id)"/>
+            </column>
+            <column name="prescription_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drug_rfzo_code" type="varchar(16)"/>
+            <column name="health_institution_id" type="bigint"/>
+            <column name="diagnosis" type="varchar(16)"/>
+            <column name="quantity" type="numeric(16,3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="participation_amount" type="numeric(16,2)"/>
+            <column name="rfzo_amount" type="numeric(16,2)"/>
+            <column name="rfzo_price" type="numeric(16,2)"/>
+            <column name="rfzo_purchase_price" type="numeric(16,2)"/>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

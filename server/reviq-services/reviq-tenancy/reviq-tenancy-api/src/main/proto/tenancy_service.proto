@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package com.reviq.tenancy.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.reviq.tenancy.grpc";
+option java_outer_classname = "TenancyServiceProto";
+
+service TenancyService {
+  rpc GetConnectionInfo (GetConnectionRequest) returns (ConnectionInfoResponse);
+  rpc GetTenantById (GetTenantByIdRequest) returns (TenantInfo);
+  rpc ListActiveTenants (ListActiveTenantsRequest) returns (ListActiveTenantsResponse);
+  rpc ValidateApiKey (ValidateApiKeyRequest) returns (ValidateApiKeyResponse);
+}
+
+message GetTenantByIdRequest {
+  string tenant_id = 1;
+}
+
+message GetConnectionRequest {
+  string tenant_code = 1;
+}
+
+message ConnectionInfoResponse {
+  string tenant_code = 1;
+  string tenant_id = 2;
+  string db_host = 3;
+  int32 db_port = 4;
+  string db_name = 5;
+  string db_username = 6;
+  string db_password = 7;
+  string status = 8;
+}
+
+message ListActiveTenantsRequest {
+}
+
+message ListActiveTenantsResponse {
+  repeated TenantInfo tenants = 1;
+}
+
+message TenantInfo {
+  string id = 1;
+  string code = 2;
+  string display_name = 3;
+  string status = 4;
+}
+
+message ValidateApiKeyRequest {
+  string raw_key = 1;
+}
+
+message ValidateApiKeyResponse {
+  bool valid = 1;
+  string tenant_code = 2;
+  string tenant_id = 3;
+  string key_name = 4;
+}

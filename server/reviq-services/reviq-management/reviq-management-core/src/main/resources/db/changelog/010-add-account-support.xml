@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- ==================== -->
+    <!-- 1. Create account table -->
+    <!-- ==================== -->
+    <changeSet id="010-01" author="reviq">
+        <createTable tableName="account">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_number" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="partner_id" type="uuid">
+                <constraints foreignKeyName="fk_account_partner" references="partner(id)"/>
+            </column>
+            <column name="location_id" type="uuid">
+                <constraints foreignKeyName="fk_account_location" references="location(id)"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints foreignKeyName="fk_account_product" references="product(id)"/>
+            </column>
+            <column name="balance" type="decimal(16,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="external_id" type="varchar(255)"/>
+            <column name="synced_at" type="timestamp"/>
+            <column name="version" type="bigint"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="account" indexName="idx_account_partner">
+            <column name="partner_id"/>
+        </createIndex>
+        <createIndex tableName="account" indexName="idx_account_external_id">
+            <column name="external_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 2. Add account_id to transaction -->
+    <!-- ==================== -->
+    <changeSet id="010-02" author="reviq">
+        <addColumn tableName="transaction">
+            <column name="account_id" type="uuid">
+                <constraints foreignKeyName="fk_transaction_account" references="account(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 3. Make transaction_line.product_id nullable -->
+    <!-- ==================== -->
+    <changeSet id="010-03" author="reviq">
+        <dropNotNullConstraint tableName="transaction_line" columnName="product_id" columnDataType="uuid"/>
+    </changeSet>
+
+</databaseChangeLog>

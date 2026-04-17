@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.reviq</groupId>
+        <artifactId>reviq-services</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>reviq-management</artifactId>
+    <packaging>pom</packaging>
+    <name>Reviq Management</name>
+    <description>Management Microservice - Customers, Transactions, Loyalty, Reports</description>
+
+    <modules>
+        <module>reviq-management-shared</module>
+        <module>reviq-management-api</module>
+        <module>reviq-management-grpc</module>
+        <module>reviq-management-core</module>
+        <module>reviq-management-sync</module>
+        <module>reviq-management-web-api</module>
+        <module>reviq-management-app</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-grpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-management-sync</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.reviq</groupId>
+        <artifactId>reviq-services</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>reviq-user-identity</artifactId>
+    <packaging>pom</packaging>
+    <name>Reviq User Identity</name>
+    <description>User Identity Microservice - Authentication, Users, Roles, Permissions</description>
+
+    <modules>
+        <module>reviq-user-identity-api</module>
+        <module>reviq-user-identity-core</module>
+        <module>reviq-user-identity-grpc</module>
+        <module>reviq-user-identity-web-api</module>
+        <module>reviq-user-identity-app</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-user-identity-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-user-identity-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-user-identity-grpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-user-identity-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

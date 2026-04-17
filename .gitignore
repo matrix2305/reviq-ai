@@ -1,0 +1,50 @@
+# Build output
+**/target/
+**/dist/
+**/build/
+**/.next/
+
+# Dependencies
+**/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Docker volumes
+data/postgres/
+data/redis/
+data/rabbitmq/
+data/minio/
+data/grafana/
+data/prometheus/
+
+# Turbo
+.turbo/
+
+# Coverage
+coverage/
+
+# Temporary
+*.tmp
+*.swp
+*.bak

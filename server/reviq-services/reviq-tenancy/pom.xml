@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.reviq</groupId>
+        <artifactId>reviq-services</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>reviq-tenancy</artifactId>
+    <packaging>pom</packaging>
+    <name>Reviq Tenancy</name>
+    <description>Tenant Management Microservice - provisioning, connection management, admin API</description>
+
+    <modules>
+        <module>reviq-tenancy-shared</module>
+        <module>reviq-tenancy-api</module>
+        <module>reviq-tenancy-core</module>
+        <module>reviq-tenancy-grpc</module>
+        <module>reviq-tenancy-web-api</module>
+        <module>reviq-tenancy-app</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-tenancy-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-tenancy-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-tenancy-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-tenancy-grpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.reviq</groupId>
+                <artifactId>reviq-tenancy-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-01" author="reviq">
+        <createTable tableName="subscription_plan">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"><constraints nullable="false" unique="true"/></column>
+            <column name="display_name" type="varchar(100)"><constraints nullable="false"/></column>
+            <column name="description" type="varchar(500)"/>
+            <column name="monthly_price" type="numeric(10,2)"><constraints nullable="false"/></column>
+            <column name="yearly_price" type="numeric(10,2)"><constraints nullable="false"/></column>
+            <column name="currency" type="varchar(3)" defaultValue="EUR"><constraints nullable="false"/></column>
+            <column name="trial_days" type="int" defaultValueNumeric="0"/>
+            <column name="max_tokens_per_session" type="int"><constraints nullable="false"/></column>
+            <column name="paddle_product_id" type="varchar(100)"/>
+            <column name="paddle_monthly_price_id" type="varchar(100)"/>
+            <column name="paddle_yearly_price_id" type="varchar(100)"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"><constraints nullable="false"/></column>
+            <column name="sort_order" type="int" defaultValueNumeric="0"/>
+            <column name="version" type="bigint" defaultValueNumeric="0"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004-02" author="reviq">
+        <createTable tableName="tenant_subscription">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_id" type="uuid">
+                <constraints nullable="false" unique="true" foreignKeyName="fk_subscription_tenant" references="tenant(id)"/>
+            </column>
+            <column name="plan_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_subscription_plan" references="subscription_plan(id)"/>
+            </column>
+            <column name="status" type="varchar(20)"><constraints nullable="false"/></column>
+            <column name="billing_cycle" type="varchar(10)"><constraints nullable="false"/></column>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="trial_end_date" type="date"/>
+            <column name="next_billing_date" type="date"/>
+            <column name="price_at_purchase" type="numeric(10,2)"/>
+            <column name="currency" type="varchar(3)" defaultValue="EUR"/>
+            <column name="auto_renew" type="boolean" defaultValueBoolean="true"><constraints nullable="false"/></column>
+            <column name="paddle_subscription_id" type="varchar(100)"/>
+            <column name="paddle_customer_id" type="varchar(100)"/>
+            <column name="custom_max_tokens_per_session" type="int"/>
+            <column name="canceled_at" type="timestamp"/>
+            <column name="cancellation_reason" type="varchar(500)"/>
+            <column name="access_ends_at" type="timestamp"/>
+            <column name="version" type="bigint" defaultValueNumeric="0"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+        </createTable>
+
+        <createIndex tableName="tenant_subscription" indexName="idx_sub_paddle_id">
+            <column name="paddle_subscription_id"/>
+        </createIndex>
+        <createIndex tableName="tenant_subscription" indexName="idx_sub_status">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="004-03" author="reviq">
+        <createTable tableName="processed_webhook_event">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_id" type="varchar(100)"><constraints nullable="false" unique="true"/></column>
+            <column name="event_type" type="varchar(50)"><constraints nullable="false"/></column>
+            <column name="source" type="varchar(20)" defaultValue="paddle"><constraints nullable="false"/></column>
+            <column name="processed_at" type="timestamp"><constraints nullable="false"/></column>
+            <column name="version" type="bigint" defaultValueNumeric="0"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()"><constraints nullable="false"/></column>
+        </createTable>
+
+        <createIndex tableName="processed_webhook_event" indexName="idx_webhook_event_id">
+            <column name="event_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

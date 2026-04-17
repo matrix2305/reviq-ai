@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="005-01" author="reviq">
+        <createTable tableName="stock">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="store_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_stock_store" references="store(id)"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_stock_product" references="product(id)"/>
+            </column>
+            <column name="quantity" type="numeric(16,3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="stock" columnNames="store_id,product_id"
+                             constraintName="uq_stock_store_product"/>
+
+        <createIndex tableName="stock" indexName="idx_stock_store">
+            <column name="store_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="005-02" author="reviq">
+        <createTable tableName="stock_history">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="store_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_stock_history_store" references="store(id)"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_stock_history_product" references="product(id)"/>
+            </column>
+            <column name="quantity" type="numeric(16,3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recorded_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="stock_history" indexName="idx_stock_history_recorded">
+            <column name="recorded_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

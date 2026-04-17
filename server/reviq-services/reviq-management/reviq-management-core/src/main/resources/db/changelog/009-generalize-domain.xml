@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- ==================== -->
+    <!-- 1. Rename store → location -->
+    <!-- ==================== -->
+    <changeSet id="009-01" author="reviq">
+        <renameTable oldTableName="store" newTableName="location"/>
+        <renameColumn tableName="location" oldColumnName="erp_code" newColumnName="code" columnDataType="varchar(16)"/>
+        <renameColumn tableName="location" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+        <addColumn tableName="location">
+            <column name="type" type="varchar(20)"/>
+        </addColumn>
+        <dropColumn tableName="location" columnName="loyalty_store_id"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 2. Rename receipt → transaction -->
+    <!-- ==================== -->
+    <changeSet id="009-02" author="reviq">
+        <renameTable oldTableName="receipt" newTableName="transaction"/>
+        <renameColumn tableName="transaction" oldColumnName="receipt_number" newColumnName="transaction_number" columnDataType="bigint"/>
+        <renameColumn tableName="transaction" oldColumnName="receipt_type" newColumnName="type" columnDataType="varchar(20)"/>
+        <renameColumn tableName="transaction" oldColumnName="receipt_time" newColumnName="transaction_time" columnDataType="timestamp"/>
+        <renameColumn tableName="transaction" oldColumnName="cash_register_session_id" newColumnName="register_session_id" columnDataType="uuid"/>
+        <renameColumn tableName="transaction" oldColumnName="customer_id" newColumnName="partner_id" columnDataType="uuid"/>
+        <renameColumn tableName="transaction" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+        <addColumn tableName="transaction">
+            <column name="channel" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 3. Rename receipt_item → transaction_line -->
+    <!-- ==================== -->
+    <changeSet id="009-03" author="reviq">
+        <renameTable oldTableName="receipt_item" newTableName="transaction_line"/>
+        <renameColumn tableName="transaction_line" oldColumnName="receipt_id" newColumnName="transaction_id" columnDataType="uuid"/>
+        <renameColumn tableName="transaction_line" oldColumnName="item_type" newColumnName="line_type" columnDataType="varchar(20)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 4. Rename receipt_payment → transaction_payment -->
+    <!-- ==================== -->
+    <changeSet id="009-04" author="reviq">
+        <renameTable oldTableName="receipt_payment" newTableName="transaction_payment"/>
+        <renameColumn tableName="transaction_payment" oldColumnName="receipt_id" newColumnName="transaction_id" columnDataType="uuid"/>
+        <renameColumn tableName="transaction_payment" oldColumnName="payment_type_id" newColumnName="payment_method_id" columnDataType="uuid"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 5. Rename payment_type → payment_method -->
+    <!-- ==================== -->
+    <changeSet id="009-05" author="reviq">
+        <renameTable oldTableName="payment_type" newTableName="payment_method"/>
+        <renameColumn tableName="payment_method" oldColumnName="erp_code" newColumnName="code" columnDataType="varchar(16)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 6. Rename cash_register_session → register_session -->
+    <!-- ==================== -->
+    <changeSet id="009-06" author="reviq">
+        <renameTable oldTableName="cash_register_session" newTableName="register_session"/>
+        <renameColumn tableName="register_session" oldColumnName="store_id" newColumnName="location_id" columnDataType="uuid"/>
+        <renameColumn tableName="register_session" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 7. Rename customer → partner -->
+    <!-- ==================== -->
+    <changeSet id="009-07" author="reviq">
+        <renameTable oldTableName="customer" newTableName="partner"/>
+        <renameColumn tableName="partner" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 8. Rename loyal_customer → contact -->
+    <!-- ==================== -->
+    <changeSet id="009-08" author="reviq">
+        <renameTable oldTableName="loyal_customer" newTableName="contact"/>
+        <renameColumn tableName="contact" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 9. Update loyalty_card: customer_id → contact_id -->
+    <!-- ==================== -->
+    <changeSet id="009-09" author="reviq">
+        <renameColumn tableName="loyalty_card" oldColumnName="customer_id" newColumnName="contact_id" columnDataType="uuid"/>
+        <renameColumn tableName="loyalty_card" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 10. Rename product_group → category -->
+    <!-- ==================== -->
+    <changeSet id="009-10" author="reviq">
+        <renameTable oldTableName="product_group" newTableName="category"/>
+        <renameColumn tableName="category" oldColumnName="erp_code" newColumnName="code" columnDataType="varchar(16)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 11. Update product: product_group_id → category_id -->
+    <!-- ==================== -->
+    <changeSet id="009-11" author="reviq">
+        <renameColumn tableName="product" oldColumnName="product_group_id" newColumnName="category_id" columnDataType="uuid"/>
+        <renameColumn tableName="product" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 12. Rename stock → inventory -->
+    <!-- ==================== -->
+    <changeSet id="009-12" author="reviq">
+        <renameTable oldTableName="stock" newTableName="inventory"/>
+        <renameColumn tableName="inventory" oldColumnName="store_id" newColumnName="location_id" columnDataType="uuid"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 13. Rename stock_history → inventory_movement -->
+    <!-- ==================== -->
+    <changeSet id="009-13" author="reviq">
+        <renameTable oldTableName="stock_history" newTableName="inventory_movement"/>
+        <renameColumn tableName="inventory_movement" oldColumnName="store_id" newColumnName="location_id" columnDataType="uuid"/>
+        <addColumn tableName="inventory_movement">
+            <column name="movement_type" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 14. Update brand: erp_code → code -->
+    <!-- ==================== -->
+    <changeSet id="009-14" author="reviq">
+        <renameColumn tableName="brand" oldColumnName="erp_code" newColumnName="code" columnDataType="varchar(16)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 15. Update promotion + loyalty_tier: erp_id → external_id -->
+    <!-- ==================== -->
+    <changeSet id="009-15" author="reviq">
+        <renameColumn tableName="promotion" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+        <renameColumn tableName="loyalty_tier" oldColumnName="erp_id" newColumnName="external_id" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- ==================== -->
+    <!-- 16. Drop prescription table -->
+    <!-- ==================== -->
+    <changeSet id="009-16" author="reviq">
+        <dropTable tableName="prescription"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-01" author="reviq">
+        <createTable tableName="loyal_customer">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="first_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="varchar(10)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="street" type="varchar(100)"/>
+            <column name="city" type="varchar(100)"/>
+            <column name="postal_code" type="varchar(10)"/>
+            <column name="phone" type="varchar(20)"/>
+            <column name="mobile" type="varchar(20)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="loyal_customer" indexName="idx_loyal_customer_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="004-02" author="reviq">
+        <createTable tableName="loyalty_tier">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount" type="numeric(7,5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_from" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_to" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="threshold_amount" type="numeric(16,2)"/>
+            <column name="points_based" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loyalty_program" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004-03" author="reviq">
+        <createTable tableName="loyalty_card">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="barcode" type="varchar(50)"/>
+            <column name="balance" type="numeric(16,2)"/>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="uuid">
+                <constraints foreignKeyName="fk_card_customer" references="loyal_customer(id)"/>
+            </column>
+            <column name="current_tier_id" type="uuid">
+                <constraints foreignKeyName="fk_card_tier" references="loyalty_tier(id)"/>
+            </column>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="loyalty_card" indexName="idx_loyalty_card_barcode">
+            <column name="barcode"/>
+        </createIndex>
+        <createIndex tableName="loyalty_card" indexName="idx_loyalty_card_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="004-04" author="reviq">
+        <createTable tableName="card_tier_history">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="loyalty_card_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_tier_history_card" references="loyalty_card(id)"/>
+            </column>
+            <column name="loyalty_tier_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_tier_history_tier" references="loyalty_tier(id)"/>
+            </column>
+            <column name="valid_from" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_to" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004-05" author="reviq">
+        <createTable tableName="customer">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="erp_id" type="bigint"/>
+            <column name="type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tax_number" type="varchar(20)"/>
+            <column name="registration_number" type="varchar(20)"/>
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(100)"/>
+            <column name="city" type="varchar(100)"/>
+            <column name="postal_code" type="varchar(10)"/>
+            <column name="phone" type="varchar(50)"/>
+            <column name="fax" type="varchar(50)"/>
+            <column name="synced_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="customer" indexName="idx_customer_erp_id">
+            <column name="erp_id"/>
+        </createIndex>
+
+        <!-- Add FK from receipt to loyalty_card and customer now that tables exist -->
+        <addForeignKeyConstraint baseTableName="receipt" baseColumnNames="loyalty_card_id"
+                                 constraintName="fk_receipt_loyalty_card"
+                                 referencedTableName="loyalty_card" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="receipt" baseColumnNames="customer_id"
+                                 constraintName="fk_receipt_customer"
+                                 referencedTableName="customer" referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
